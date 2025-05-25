@@ -9,6 +9,7 @@ export class CheckoutPage{
     readonly continueButton: Locator;
     readonly finishButton: Locator;
     readonly cancelButton: Locator;
+    readonly errorText: Locator;
 
     constructor(readonly page: Page) {
         this.firstNameInput = page.locator('#first-name');
@@ -18,6 +19,7 @@ export class CheckoutPage{
         this.continueButton = page.locator('#continue');
         this.finishButton = page.locator('#finish');
         this.cancelButton = page.locator('#cancel');   
+        this.errorText = page.locator('[data-test="error"]');
     }
 
     async fillCheckoutForm(firstName: string, lastName: string, zipCode: string){
@@ -27,7 +29,11 @@ export class CheckoutPage{
         await this.continueButton.click();
     }
 
-    async completePurchase(){
+    async finishPurchase(){
         await this.finishButton.click();
+    }
+
+    async getErrorMessage(): Promise<string | null> {
+        return await this.errorText.innerText();
     }
 }
